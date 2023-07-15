@@ -7,6 +7,7 @@ User=mhawesh
 Group=mhawesh
 WorkingDirectory=home/mhawesh/app/src/
 Environment="Path=/home/mhawesh/app/venv/bin"
+EnvironmentFile=/home/mhawesh/.env
 ExecStart=/home/mhawesh/app/venv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
 
 [Install]
