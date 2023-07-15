@@ -1,11 +1,11 @@
 [Unit]
-Description= demo fastapi application
+Description=demo fastapi application
 After=network.target
 
 [Service]
 User=mhawesh
 Group=mhawesh
-WorkingDirectory=home/mhawesh/app/src
+WorkingDirectory=home/mhawesh/app/src/
 Environment="Path=/home/mhawesh/app/venv/bin"
 ExecStart=/home/mhawesh/app/venv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
 
