@@ -12,14 +12,10 @@ router = APIRouter(
 
 ###### Create User ######
 
-#, current_user: int = Depends(oauth2.get_current_user)
-#  if current_user.user_type == "admin":
-# else:
-#        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail=f'{current_user.username} is not allowed to create users.')
 
 @router.post("/", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-   
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    if current_user.user_type == "admin":
 
         month_year = datetime.now().strftime("%m%Y")
         user_username = user.first_name + user.last_name + month_year
@@ -39,7 +35,9 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(new_user)
         return new_user
-    
+    else:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail=f'{current_user.username} is not allowed to create users.')
+
 
 @router.get("/{id}", response_model=schemas.UserResponse)
 def get_user(id: int, db: Session = Depends(get_db)):
